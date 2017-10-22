@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aisino.dao.shiro.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.aisino.domain.shiro.User" >
+    <id column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="USER_PRINCIPAL" property="userPrincipal" jdbcType="VARCHAR" />
+    <result column="USER_CREDITIALS" property="userCreditials" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="USER_PHONE" property="userPhone" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    USER_ID, USER_PRINCIPAL, USER_CREDITIALS, CREATE_TIME, UPDATE_TIME, status, USER_PHONE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.aisino.domain.shiro.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ASN_USER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ASN_USER
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ASN_USER
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.aisino.domain.shiro.UserExample" >
+    delete from ASN_USER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.aisino.domain.shiro.User" >
+    insert into ASN_USER (USER_ID, USER_PRINCIPAL, USER_CREDITIALS, 
+      CREATE_TIME, UPDATE_TIME, status, 
+      USER_PHONE)
+    values (#{userId,jdbcType=VARCHAR}, #{userPrincipal,jdbcType=VARCHAR}, #{userCreditials,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
+      #{userPhone,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aisino.domain.shiro.User" >
+    insert into ASN_USER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="userPrincipal != null" >
+        USER_PRINCIPAL,
+      </if>
+      <if test="userCreditials != null" >
+        USER_CREDITIALS,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="userPhone != null" >
+        USER_PHONE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userPrincipal != null" >
+        #{userPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreditials != null" >
+        #{userCreditials,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.aisino.domain.shiro.UserExample" resultType="java.lang.Integer" >
+    select count(*) from ASN_USER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ASN_USER
+    <set >
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPrincipal != null" >
+        USER_PRINCIPAL = #{record.userPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userCreditials != null" >
+        USER_CREDITIALS = #{record.userCreditials,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPhone != null" >
+        USER_PHONE = #{record.userPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ASN_USER
+    set USER_ID = #{record.userId,jdbcType=VARCHAR},
+      USER_PRINCIPAL = #{record.userPrincipal,jdbcType=VARCHAR},
+      USER_CREDITIALS = #{record.userCreditials,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=VARCHAR},
+      USER_PHONE = #{record.userPhone,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aisino.domain.shiro.User" >
+    update ASN_USER
+    <set >
+      <if test="userPrincipal != null" >
+        USER_PRINCIPAL = #{userPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreditials != null" >
+        USER_CREDITIALS = #{userCreditials,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        USER_PHONE = #{userPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aisino.domain.shiro.User" >
+    update ASN_USER
+    set USER_PRINCIPAL = #{userPrincipal,jdbcType=VARCHAR},
+      USER_CREDITIALS = #{userCreditials,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      USER_PHONE = #{userPhone,jdbcType=VARCHAR}
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- String selectByUserPrincipal(String userPrincipal); -->
+  <select id="selectByUserPrincipal" resultType="string">
+  	SELECT 
+		USER_CREDITIALS
+	FROM ASN_USER WHERE USER_PRINCIPAL = #{USER_PRINCIPAL}
+	AND status='1'
+  </select>
+  
+  <!-- User selectByUserPhone(String userPhone); -->
+  <select id="selectByUserPhone" resultType="com.aisino.domain.shiro.User">
+  	SELECT 
+		*
+	FROM ASN_USER WHERE USER_PHONE = #{USER_PHONE}
+	AND status='1'
+  </select>
+  
+  <!-- User selectByPrincipal(String principal); -->
+  
+  <resultMap id="ResultMapWithRoleWithPermission" type="com.aisino.domain.shiro.User" >
+    <id column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="USER_PRINCIPAL" property="userPrincipal" jdbcType="VARCHAR" />
+    <result column="USER_CREDITIALS" property="userCreditials" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="USER_PHONE" property="userPhone" jdbcType="VARCHAR" />
+    <collection property="roles" ofType="com.aisino.domain.shiro.Role">
+    	<id column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+	    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+	    <result column="ROLE_DESC" property="roleDesc" jdbcType="VARCHAR" />
+	    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <collection property="permissions" ofType="com.aisino.domain.shiro.Permission">
+	    	<id column="PERMISSION_ID" property="permissionId" jdbcType="VARCHAR" />
+		    <result column="PERMISSION_NAME" property="permissionName" jdbcType="VARCHAR" />
+		    <result column="PERMISSION_URI" property="permissionUri" jdbcType="VARCHAR" />
+		    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+		    <result column="status" property="status" jdbcType="VARCHAR" />
+	    </collection>
+    </collection>
+  </resultMap>
+  
+  <select id="selectByPrincipalWithRP" resultMap="ResultMapWithRoleWithPermission">
+  	SELECT 
+	u.USER_ID, u.USER_PRINCIPAL, u.USER_CREDITIALS, u.CREATE_TIME, u.UPDATE_TIME,r.ROLE_NAME,p.PERMISSION_URI
+	FROM ASN_USER u LEFT JOIN ASN_USER_ROLE ur
+	ON u.USER_ID = ur.USER_ID
+	left JOIN ASN_ROLE r
+	ON r.ROLE_ID = ur.ROLE_ID
+	LEFT JOIN ASN_ROLE_PERMISSION rp
+	ON rp.ROLE_ID = r.ROLE_ID
+	LEFT JOIN ASN_PERMISSION p
+	ON rp.PERMISSION_ID = p.PERMISSION_ID
+	WHERE  u.USER_PRINCIPAL = #{principal}
+	AND ISNULL(ur.status, 1) = '1' 
+ 	AND ISNULL(rp.status, 1) = '1'
+  </select>
+  
+</mapper>

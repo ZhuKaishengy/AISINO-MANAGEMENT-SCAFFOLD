@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.aisino.AISINO-MANAGEMENT-SCAFFOLD</groupId>
+  <artifactId>AISINO-MANAGEMENT-SCAFFOLD</artifactId>
+  <packaging>war</packaging>
+  <name>AISINO-MANAGEMENT-SCAFFOLD</name>
+  <description/>
+  
+  <properties>
+    <webVersion>3.1</webVersion>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <!--=============== zks 为此脚手架搭建了POM 的父子关系实现继承，此项目的依赖又父POM 统一管理 ==========================-->
+  <parent>
+  	  <groupId>com.aisino.springmvc</groupId>
+	  <artifactId>SpringmvcFather</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+  <!-- ==============已经配置到父POM中的依赖================== -->
+  <!-- 
+  	1.spring-webmvc
+  	2.spring-jdbc	spring-aspects	spring-test
+  	3.mybatis	mybatis-spring	mybatis-generator	pagehelper
+  	4.junit	log4j	sl4j-api	sl4j-log4j	servlet-api	jstl	数据库连接池	数据库驱动
+  	5.jackson	hibernate-validator
+  	6.shiro-core	shiro-web	shiro-spring
+  
+   -->
+  <!-- 此依赖没有配置到父POM中 -->
+  	<dependency>
+	    <groupId>org.apache.shiro</groupId>
+	    <artifactId>shiro-ehcache</artifactId>
+	    <version>1.4.0</version>
+	</dependency>
+   <!-- shiro-cas集成依赖包 -->
+      <!--  <dependency>
+           <groupId>org.apache.shiro</groupId>
+           <artifactId>shiro-cas</artifactId>
+           <version>1.4.0</version>
+       </dependency> -->
+  </dependencies>
+</project>

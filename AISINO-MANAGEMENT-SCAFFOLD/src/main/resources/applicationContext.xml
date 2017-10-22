@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+	<!-- 自动扫描的包 -->
+	<context:component-scan base-package="com.aisino">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	<!-- 数据源 -->
+	<context:property-placeholder location="classpath:*.properties"/>
+
+	
+	<bean id="comboPooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<property name="driverClass" value="${jdbc.driver}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+	</bean>
+	<!-- 事务、aop -->
+	<bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="comboPooledDataSource"></property>
+	</bean>
+	
+	<tx:advice transaction-manager="dataSourceTransactionManager" id="txAdvice">
+		<tx:attributes>
+			<tx:method name="select*" read-only="true"/>
+			<tx:method name="*"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut expression="execution(* com.aisino.service..*.*(..))" id="pointcut"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
+	</aop:config>
+	
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	
+	<!-- spring 国际化 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messageResource.i18n"></property>
+	</bean>
+	
+	<!-- spring整合第三方jar -->
+	<!-- spring 整合Mybatis -->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="comboPooledDataSource"></property>
+		<property name="configLocation" value="classpath:mybatis-conf.xml"></property>
+		<property name="mapperLocations" value="classpath:mapper/**/*.xml"></property>
+	</bean>
+	
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.aisino.dao"></property>
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"></constructor-arg>
+		<constructor-arg name="executorType" value="BATCH"/>
+	</bean>
+	
+	<!-- spring 整合shiro -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager"></property>
+		<property name="loginUrl" value="/login.jsp"></property>
+		<property name="unauthorizedUrl" value="/unauthorizedUrl.jsp"></property>
+		<property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"></property>
+	</bean>
+	
+	<!-- filterChainDefinitionMap 工厂方法,工厂实例自动注入 -->
+	<bean id="filterChainDefinitionMap" factory-bean="filterChainDefinitionMapBuilder" factory-method="buildFilterChainDefinitionMap"></bean>
+	
+	<!-- shiro-securityManager -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="cacheManager" ref="cacheManager"></property>
+		<property name="authenticator" ref="authenticator"></property>
+		<property name="realms">
+			<list>
+				<ref bean="phoneAuthenticationRealm"/>
+				<ref bean="shiroRealm"/>
+			</list>
+		</property>
+		<property name="rememberMeManager" ref="rememberMeManager"></property>
+	</bean>
+	
+	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+		<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}" />
+		<property name="cookie" ref="simpleCookie"></property>
+	</bean>
+	
+	<bean id="simpleCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<property name="maxAge" value="604800"></property>
+		<property name="name" value="rememberMeCookie"></property>
+	</bean>
+	
+	<!-- ehcache 配置，并使用cache注解 -->
+	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"></property>
+	</bean>
+	
+	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+		<property name="authenticationStrategy">
+			<bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
+		</property>
+	</bean>
+	
+	<bean id="shiroRealm" class="com.aisino.realms.shiro.ShiroRealm">
+		<property name="credentialsMatcher">
+			<bean class="com.aisino.matcher.shiro.MyMatcher">
+				<constructor-arg ref="cacheManager"/>
+				<property name="hashAlgorithmName" value="MD5"></property>
+				<property name="hashIterations" value="1024"></property>
+				<!-- true means hex encoded, false means base64 encoded -->
+				<property name="storedCredentialsHexEncoded" value="false"></property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="phoneAuthenticationRealm" class="com.aisino.realms.shiro.PhoneAuthenticationRealm">
+		<constructor-arg ref="cacheManager"/>
+		<property name="credentialsMatcher">
+			<bean class="com.aisino.matcher.shiro.MyMatcher">
+				<constructor-arg ref="cacheManager"/>
+				<property name="hashAlgorithmName" value="MD5"></property>
+				<property name="hashIterations" value="1024"></property>
+				<!-- true means hex encoded, false means base64 encoded -->
+				<property name="storedCredentialsHexEncoded" value="false"></property>
+			</bean>
+		</property>
+	</bean>
+	
+</beans>
