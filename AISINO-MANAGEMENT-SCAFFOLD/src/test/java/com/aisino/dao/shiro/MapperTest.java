@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.aisino.domain.shiro.FilterChainDefinition;
+import com.aisino.domain.shiro.Menu;
 import com.aisino.domain.shiro.Permission;
 import com.aisino.domain.shiro.Role;
 import com.aisino.domain.shiro.RolePermission;
@@ -22,7 +23,7 @@ import com.aisino.domain.shiro.UserRole;
 public class MapperTest {
 
 	@Autowired
-	TestMapper testMapper;
+	MenuMapper menuMapper;
 	
 	@Autowired
 	UserMapper userMapper;
@@ -45,11 +46,6 @@ public class MapperTest {
 	@Autowired
 	SqlSessionTemplate sqlSession;
 	
-	@Test
-	public void testTestMapper(){
-		long count = testMapper.countByExample(null);
-		System.out.println(count);
-	}
 	@Test
 	public void testInsertUser(){
 		User record = new User("test", "111");
@@ -181,5 +177,11 @@ public class MapperTest {
 		User user = userMapper.selectByUserPhone("13109894018");
 		System.out.println(user.getUserCreditials());
 		System.out.println(user.getUserPrincipal());
+	}
+	
+	@Test
+	public void testMenuInsert(){
+		Menu record = new Menu(null, "icon-folder-open", "四级菜单", "1", null, "68853654-52F1-4AD1-92C1-C924A6A8A82F");
+		menuMapper.insertSelective(record );
 	}
 }

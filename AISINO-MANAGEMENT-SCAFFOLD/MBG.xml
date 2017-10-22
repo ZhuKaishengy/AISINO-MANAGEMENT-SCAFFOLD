@@ -5,24 +5,24 @@
       "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <!-- <classPathEntry
-        location="C:\mavenRepository\com\microsoft\sqlserver\sqljdbc4\4.0\sqljdbc4-4.0.jar" /> -->
     <classPathEntry
-        location="C:\mavenRepository\com\oracle\ojdbc6\11.1.0.7.0-Production\ojdbc6-11.1.0.7.0-Production.jar" />
+        location="C:\mavenRepository\com\microsoft\sqlserver\sqljdbc4\4.0\sqljdbc4-4.0.jar" />
+    <!-- <classPathEntry
+        location="C:\mavenRepository\com\oracle\ojdbc6\11.1.0.7.0-Production\ojdbc6-11.1.0.7.0-Production.jar" /> -->
     <context id="mysqlTables" targetRuntime="MyBatis3">
     
         <commentGenerator>
             <property name="suppressAllComments" value="true" />
         </commentGenerator>
         
-       <!--  <jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+        <jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
             connectionURL="jdbc:sqlserver://192.168.0.92:1433;DatabaseName=zksTest"
             userId="sa" password="GL86P_#">
-        </jdbcConnection> -->
-        <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+        </jdbcConnection>
+        <!-- <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
             connectionURL="jdbc:oracle:thin:@61.161.232.20:1522:zksorcl"
             userId="lnhx" password="lnhx">
-        </jdbcConnection>
+        </jdbcConnection> -->
         
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false" />
@@ -48,7 +48,7 @@
 
          <!-- 这里是数据库的表名table_user 以及 POJO类的名字User -->
 
-       	<table tableName="IM_WEB_INVOICE_DATA_TAB" domainObjectName="Test"></table>
+       	<table tableName="ASN_MENU" domainObjectName="Menu"></table>
         <!-- <table tableName="ASN_ROLE" domainObjectName="Role"></table>
         <table tableName="ASN_PERMISSION" domainObjectName="Permission"></table>
         <table tableName="ASN_USER_ROLE" domainObjectName="UserRole"></table>

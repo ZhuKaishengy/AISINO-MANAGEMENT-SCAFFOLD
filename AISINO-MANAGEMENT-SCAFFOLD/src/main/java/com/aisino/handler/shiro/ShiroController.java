@@ -168,11 +168,11 @@ public class ShiroController {
 		
 		return "shiro/main";
 	}
-	@RequestMapping("/mainPage")
-	public String mainPage(){
+	@RequestMapping("/indexPage")
+	public String indexPage(){
 		
 		logger.info("跳转主页面");
-		return "shiro/test1";
+		return "shiro/indexPage";
 	}
 	@RequestMapping("/lock")
 	public String lock(){
