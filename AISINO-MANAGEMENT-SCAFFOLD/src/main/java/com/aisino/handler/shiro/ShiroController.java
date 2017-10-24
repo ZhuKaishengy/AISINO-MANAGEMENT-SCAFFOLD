@@ -1,6 +1,7 @@
 package com.aisino.handler.shiro;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -29,7 +30,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.aisino.domain.shiro.Menu;
 import com.aisino.domain.shiro.User;
+import com.aisino.service.shiro.MenuService;
 import com.aisino.service.shiro.UserService;
 import com.aisino.system.CommonConstant;
 import com.aisino.to.shiro.Msg;
@@ -51,6 +54,9 @@ public class ShiroController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	MenuService menuService;
 	
 	private Cache<String, AtomicInteger> loginWithoutPasswordCache;  //创建缓存的对象  
 	
@@ -162,18 +168,20 @@ public class ShiroController {
 	}
 	
 	@RequestMapping("/main")
-	public String main(){
-	
-		logger.info("直接跳转主页面");
-		
+	public String main(Map<String, Object> map){
+		List<Menu> oneLevelMenu = menuService.getMenuListByUpId(null);
+		map.put("menuList", oneLevelMenu);
+		logger.info("跳转主页面，请求域中key=menuList，value="+oneLevelMenu);
 		return "shiro/main";
 	}
+	
 	@RequestMapping("/indexPage")
 	public String indexPage(){
 		
 		logger.info("跳转主页面");
 		return "shiro/indexPage";
 	}
+	
 	@RequestMapping("/lock")
 	public String lock(){
 		
@@ -305,4 +313,21 @@ public class ShiroController {
 		return Msg.fail().add("response_message", "密码不正确！");
 	}
 	
+	@ResponseBody
+	@RequestMapping("/getMenuList")
+	public Msg getMenuListByUpId(@RequestParam(value="upId") String upId){
+		List<Menu> menuList = menuService.getMenuListByUpId(upId);
+		logger.info("根据upId="+upId+",获取menuList="+menuList);
+		return Msg.success().add("menuList", menuList);
+	}
+	
+	/**
+	 * 菜单栏管理
+	 * @return
+	 */
+	@RequestMapping("/shiro/menuManage")
+	public String menuManage(){
+		
+		return "shiro/menuManage";
+	}
 }

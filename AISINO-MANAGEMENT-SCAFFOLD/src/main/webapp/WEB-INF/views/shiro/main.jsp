@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -120,7 +121,7 @@ pageContext.setAttribute("page", request.getContextPath());
 					<!-- BEGIN INBOX DROPDOWN -->
 
 					<li class="dropdown" id="header_inbox_bar">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<a href="" class="dropdown-toggle" data-toggle="dropdown">
 						<i class="icon-envelope"></i>
 						<span class="badge">1</span>
 						</a>
@@ -291,74 +292,61 @@ pageContext.setAttribute("page", request.getContextPath());
 					<span class="selected"></span>
 					</a>
 				</li>
-
-				<li class="oneLevel">
-					<a>
-					<i class="icon-folder-open"></i> 
-					<span class="title">四级菜单</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<li>
-							<a href="javascript:;">
-							<i class="icon-cogs"></i> 
-							Item 1
-							<span class="arrow"></span>
-							</a>
-							<ul class="sub-menu">
-								<li>
-									<a href="javascript:;">
-									<i class="icon-user"></i>
-									Sample Link 1
-									<span class="arrow"></span>
+				<!-- ================遍历一级节点开始======================== -->
+				<c:forEach items="${menuList }" var="menu">
+				<!-- 需要角色控制 -->
+					<c:if test="${menu.roleNeeded != null}">
+						<c:if test='${menu.haschild == "1"}'>
+							<shiro:hasRole name="${menu.roleNeeded }">
+								<li class="oneLevel">
+									<a id="${menu.menuId }" >
+										<i class=${menu.iconClass }></i> 
+										<span class="title">${menu.title }</span>
+										<span class="arrow"></span>
 									</a>
-									<ul class="sub-menu">
-										<li><a href="#"><i class="icon-remove"></i> Sample Link 1</a></li>
-										<li><a href="#"><i class="icon-pencil"></i> Sample Link 1</a></li>
-										<li><a href="#"><i class="icon-edit"></i> Sample Link 1</a></li>
-									</ul>
 								</li>
-								<li><a href="#"><i class="icon-user"></i>  Sample Link 1</a></li>
-								<li><a href="#"><i class="icon-external-link"></i>  Sample Link 2</a></li>
-								<li><a href="#"><i class="icon-bell"></i>  Sample Link 3</a></li>
-							</ul>
-						</li>
-						<li>
-							<a href="javascript:;">
-							<i class="icon-globe"></i> 
-							Item 2
-							<span class="arrow"></span>
-							</a>
-							<ul class="sub-menu">
-								<li><a href="#"><i class="icon-user"></i>  Sample Link 1</a></li>
-								<li><a href="#"><i class="icon-external-link"></i>  Sample Link 1</a></li>
-								<li><a href="#"><i class="icon-bell"></i>  Sample Link 1</a></li>
-							</ul>
-						</li>
-						<li>
-							<a href="#">
-							<i class="icon-folder-open"></i>
-							Item 3
-							</a>
-						</li>
-					</ul>
-				</li>
-				<shiro:hasPermission name="table4:show">
-				<li class="last oneLevel" id="test">
-					<a href="${page }/shiro/test">
-					<i class="icon-bar-chart"></i> 
-					<span class="title">直接点击进入</span>
-					</a>
-				</li>
-				</shiro:hasPermission>
+							</shiro:hasRole>
+						</c:if>
+						<c:if test='${menu.haschild == "0"}'>
+							<shiro:hasRole name="${menu.roleNeeded }">
+								<li class="oneLevel">
+									<a href="${page }/${menu.href}">
+										<i class=${menu.iconClass }></i> 
+										<span class="title">${menu.title }</span>
+									</a>
+								</li>
+							</shiro:hasRole>
+						</c:if>
+					</c:if>
+					<!-- 不需要角色控制 -->
+					<c:if test="${menu.roleNeeded == null}">
+						<c:if test='${menu.haschild == "1"}'>
+							<li class="oneLevel">
+								<a id="${menu.menuId }">
+									<i class=${menu.iconClass }></i> 
+									<span class="title">${menu.title }</span>
+									<span class="arrow "></span>
+								</a>
+							</li>
+						</c:if>
+						<c:if test='${menu.haschild == "0"}'>
+							<li class="oneLevel">
+								<a href="${page }/${menu.href }">
+									<i class=${menu.iconClass }></i> 
+									<span class="title">${menu.title }</span>
+								</a>
+							</li>
+						</c:if>
+					</c:if>
+				</c:forEach>
+				
+				<!--================ 遍历一级节点 结束==================== -->
+				
 			</ul>
 
 			<!-- END SIDEBAR MENU -->
-
 		</div>
-
 		<!-- END SIDEBAR -->
-
 		<!-- BEGIN PAGE -->
 
 		<div class="page-content">
@@ -444,18 +432,20 @@ pageContext.setAttribute("page", request.getContextPath());
 								<a href="${page }/shiro/main">Home</a> 
 								<i class="icon-angle-right"></i>
 							</li>
-							<li><a href="${page }/shiro/main">首页</a></li>
+							<li>
+								<i class="icon-dashboard"></i>
+								<a href="${page }/shiro/main">首页</a>
+							</li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->
 					</div>
 				</div>
 
 				<!-- END PAGE HEADER-->
-
+				
+				<!-- 页面动态加载的部分 -->
 				<div id="dashboard">
-
 					<p>This is index page！</p>
-
 				</div>
 
 			</div>
@@ -509,9 +499,11 @@ pageContext.setAttribute("page", request.getContextPath());
 
 		jQuery(document).ready(function() {    
 
-		   App.init(); // initlayout and core plugins
+		   App.init(); // 全局js配置文件
 
-		   Index.init();
+		   Index.init(); //插件的初始化
+		   
+		   Index.initIntro();
 
 		  /*  Index.initJQVMAP(); // init index page's custom scripts
 
@@ -525,7 +517,7 @@ pageContext.setAttribute("page", request.getContextPath());
 
 		   Index.initDashboardDaterange();
 
-		   Index.initIntro(); */
+		    */
 		   
 		   //锁定页
 		   $("#lock_page").click(function(){
@@ -539,7 +531,8 @@ pageContext.setAttribute("page", request.getContextPath());
 
 	<!-- END JAVASCRIPTS -->
 
-<script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();</script></body>
+<script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();</script>
+</body>
 
 <!-- END BODY -->
 

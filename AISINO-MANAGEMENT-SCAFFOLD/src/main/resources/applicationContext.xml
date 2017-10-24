@@ -20,7 +20,7 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	<!-- 数据源 -->
-	<context:property-placeholder location="classpath:db.properties"/>
+	<context:property-placeholder location="classpath:/db.properties"/>
 
 	
 	<bean id="comboPooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">

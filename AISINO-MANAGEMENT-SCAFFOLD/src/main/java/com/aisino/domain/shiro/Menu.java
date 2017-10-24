@@ -95,6 +95,13 @@ public class Menu {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	@Override
+	public String toString() {
+		return "Menu [menuId=" + menuId + ", menuUpid=" + menuUpid + ", iconClass=" + iconClass + ", title=" + title
+				+ ", haschild=" + haschild + ", href=" + href + ", roleNeeded=" + roleNeeded + ", status=" + status
+				+ "]";
+	}
     
     
 }

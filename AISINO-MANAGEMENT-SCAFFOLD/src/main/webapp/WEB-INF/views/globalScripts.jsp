@@ -26,6 +26,8 @@
 	
 	<script src="${page }/static/metronic.bootstrap/media/js/jquery.validate.min.js" type="text/javascript"></script>
 
-	<script src="${page }/static/metronic.bootstrap/media/js/jquery.gritter.js" type="text/javascript"></script>	
+	<script src="${page }/static/metronic.bootstrap/media/js/jquery.gritter.js" type="text/javascript"></script>
+		
+	<%-- <script src="${page }/static/ajaxify/ajaxify.min.js" type="text/javascript"></script> --%>	
 	
 	<!-- END CORE PLUGINS -->

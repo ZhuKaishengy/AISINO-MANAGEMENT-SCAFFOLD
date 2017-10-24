@@ -18,15 +18,16 @@ import com.aisino.domain.shiro.RolePermission;
 import com.aisino.domain.shiro.User;
 import com.aisino.domain.shiro.UserRole;
 
-@ContextConfiguration("file:src/main/resources/applicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-public class MapperTest {
+@ContextConfiguration("file:src/main/resources/applicationContext.xml")
+public class MapperTest{
 
-	@Autowired
-	MenuMapper menuMapper;
 	
 	@Autowired
 	UserMapper userMapper;
+	
+	@Autowired
+	MenuMapper menuMapper;
 	
 	@Autowired
 	RoleMapper roleMapper;

@@ -153,6 +153,7 @@ var App = function () {
             } 
         }          
     }
+    
 
     var handleSidebarMenu = function () {
     	
@@ -165,8 +166,57 @@ var App = function () {
 	   			}
 	   		});
     	};
+    	function loadJsp(url,elePosition){
+//    		$.ajaxSetup({cache: false });
+    		$(elePosition).load(url);
+//    			 $(result).find("script").appendTo('body');
+    		
+    	};
     	
         jQuery('.page-sidebar').on('click', 'li > a', function (e) {
+//        	debugger;
+        	//判断：点击的节点有叶子节点
+        	var span = $(this).children("span:last");
+        	if(span.hasClass("arrow") && !$(this).hasClass("searched")){
+        		//ajax请求获取其子节点加入dom
+        		var upId = $(this).attr("id");
+        		var $this = $(this);
+        		$.ajax({
+        			url: "getMenuList",
+        			dataType: "json",
+        			async:false,
+        			data:{
+        				upId:upId
+        			},
+        			success: function(result){
+//        				alert(result.extendMap.menuList[0].iconClass);
+        				if(result != null){
+        					var menuList = result.extendMap.menuList;
+        					var ul = $("<ul class='sub-menu'></ul>");
+        					$.each(menuList, function(i, elt) {
+//        						<li><a href="#"><i class="icon-user"></i>  Sample Link 1</a></li>
+        						var li = $("<li></li>");
+        						var a = $("<a></a>");
+        						var i = $("<i></i>").addClass(elt.iconClass);
+        						if(elt.haschild == "1"){
+        							a.append(i).append(elt.title).append("<span class='arrow'></span>").attr("id",elt.menuId).appendTo(li);
+        						}else{
+        							var pathName =  window.document.location.pathname;
+        							pathName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+        							a.attr("href",pathName +elt.href).append(i).append(elt.title).appendTo(li);
+        						}
+        						li.appendTo(ul);
+        							
+        					});
+        					ul.insertAfter($this);
+        					$this.addClass("searched");
+        					
+        				}
+        				
+        			}
+        		});
+        	}
+        	
         	//所有叶子节点
                 if ($(this).next().hasClass('sub-menu') == false) {
                     if ($('.btn-navbar').hasClass('collapsed') == false) {
@@ -175,9 +225,13 @@ var App = function () {
                     $("li").removeClass("active");
                     $(this).parents("li").addClass("active");
                     var a = $(this).parents(".oneLevel").children("a:first").append("<span class='selected'></span>");
+                    debugger;
                     var url = this.href;
                     var elePosition = "#dashboard";
-                    sendAjax(url, elePosition);
+//                    $("#dashboard").ajaxify();
+//                    sendAjax(url, elePosition);
+                    $(elePosition).html("");
+                    loadJsp(url, elePosition);
                     return false;
                 }
 
