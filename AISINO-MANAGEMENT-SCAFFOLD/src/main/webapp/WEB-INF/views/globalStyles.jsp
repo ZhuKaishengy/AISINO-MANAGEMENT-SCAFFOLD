@@ -17,6 +17,8 @@
 
 <link href="${page }/static/metronic.bootstrap/media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
 
+<link href="${page}/static/bootstrap-table-develop/dist/bootstrap-table.min.css" rel="stylesheet" />
+
 <link rel="shortcut icon" href="${page }/static/pic/indexHeader.png" />
 
 <!-- END GLOBAL MANDATORY STYLES -->

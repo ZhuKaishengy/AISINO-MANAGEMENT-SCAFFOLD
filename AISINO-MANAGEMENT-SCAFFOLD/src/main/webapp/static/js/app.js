@@ -173,6 +173,17 @@ var App = function () {
     		
     	};
     	
+    	//为上方导航栏加入事件监听
+    	$("#breadAdd").on('click','a',function(){
+    		var href = $(this).attr("href");
+    		if(href != null && href != undefined){
+//    			alert(href);
+    			loadJsp(href, "#dashboard");
+    		}
+    		
+    		return false;
+    	});
+    	
         jQuery('.page-sidebar').on('click', 'li > a', function (e) {
 //        	debugger;
         	//判断：点击的节点有叶子节点
@@ -225,10 +236,33 @@ var App = function () {
                     $("li").removeClass("active");
                     $(this).parents("li").addClass("active");
                     var a = $(this).parents(".oneLevel").children("a:first").append("<span class='selected'></span>");
-                    debugger;
+                    //1.改变导航栏样式
+                    //清空span
+                    $("#breadAdd").html("");
+                    $(this).parents("li").each(function(num){
+                    	if($(this).hasClass("active")){
+                    		var text = $.trim($(this).find("a:first").text());
+                    		var icon = $(this).find("a:first i").attr("class");
+                    		var href = $(this).find("a:first").attr("href");
+                    		//加入页面头
+                    		if(num == 0){
+                    			$(".page-title span").text(text);
+                    		}
+//                    		<i class="icon-home"></i>
+//							<a href="${page }/shiro/main">首页</a>
+//							<i class="icon-angle-right"></i>
+                    		var angle = $("<i class='icon-angle-right'></i>").prependTo("#breadAdd");
+							icon = $("<i></i>").addClass(icon).insertAfter(angle);
+							text = $("<a></a>").attr("href",href).text(text).insertAfter(icon);
+							
+                    		
+                    	}
+                    });
+                    
+//                    var val = $(document).find("li[class='active']").find("a").text();
+                    //2.发送ajax请求，将结果加入页面
                     var url = this.href;
                     var elePosition = "#dashboard";
-//                    $("#dashboard").ajaxify();
 //                    sendAjax(url, elePosition);
                     $(elePosition).html("");
                     loadJsp(url, elePosition);

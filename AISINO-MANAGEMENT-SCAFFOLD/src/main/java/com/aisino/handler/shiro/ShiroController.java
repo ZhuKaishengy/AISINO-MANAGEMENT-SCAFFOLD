@@ -322,12 +322,21 @@ public class ShiroController {
 	}
 	
 	/**
-	 * 菜单栏管理
+	 * ===========================菜单栏管理==================================
 	 * @return
 	 */
-	@RequestMapping("/shiro/menuManage")
+	@RequestMapping("/menuManage")
 	public String menuManage(){
-		
+		logger.info("进入菜单管理");
 		return "shiro/menuManage";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/menuList")
+	public List<Menu> memuList(){
+		logger.info("查询所有菜单列表");
+		List<Menu> menuList = menuService.getMenuList();
+		logger.info("查出的菜单列表为：menuList"+menuList);
+		return menuList;
 	}
 }

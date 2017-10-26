@@ -424,17 +424,18 @@ pageContext.setAttribute("page", request.getContextPath());
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->
 
 						<h3 class="page-title">
-							首页 <small>一览展示</small>
+							<span>首页</span>
+							<small>一览展示</small>
 						</h3>
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a href="${page }/shiro/main">Home</a> 
-								<i class="icon-angle-right"></i>
-							</li>
-							<li>
-								<i class="icon-dashboard"></i>
 								<a href="${page }/shiro/main">首页</a>
+								<!-- <i class="icon-angle-right"></i> -->
+								<span id="breadAdd">
+									
+								</span>
+								
 							</li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->
@@ -445,7 +446,29 @@ pageContext.setAttribute("page", request.getContextPath());
 				
 				<!-- 页面动态加载的部分 -->
 				<div id="dashboard">
-					<p>This is index page！</p>
+				
+					<table data-toggle="table">
+					    <thead>
+					        <tr>
+					            <th>Item ID</th>
+					            <th>Item Name</th>
+					            <th>Item Price</th>
+					        </tr>
+					    </thead>
+					    <tbody>
+					        <tr>
+					            <td>1</td>
+					            <td>Item 1</td>
+					            <td>$1</td>
+					        </tr>
+					        <tr>
+					            <td>2</td>
+					            <td>Item 2</td>
+					            <td>$2</td>
+					        </tr>
+					    </tbody>
+					</table>
+					
 				</div>
 
 			</div>

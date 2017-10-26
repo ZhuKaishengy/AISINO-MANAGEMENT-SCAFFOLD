@@ -17,6 +17,7 @@ pageContext.setAttribute("page",path);
 <script src="${page }/static/ajaxify/ajaxify.min.js" type="text/javascript"></script>	
 </head>
 <body>
+<!-- $.load()方法插入jsp，同时插入js -->
 	<div id="content">
 		<script type="text/javascript">
 			$(function(){

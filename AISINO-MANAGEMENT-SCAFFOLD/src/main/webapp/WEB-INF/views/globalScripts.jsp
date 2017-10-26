@@ -27,6 +27,10 @@
 	<script src="${page }/static/metronic.bootstrap/media/js/jquery.validate.min.js" type="text/javascript"></script>
 
 	<script src="${page }/static/metronic.bootstrap/media/js/jquery.gritter.js" type="text/javascript"></script>
+	
+	<script src="${page}/static/bootstrap-table-develop/dist/bootstrap-table.min.js"></script>
+	
+	<script src="${page}/static/bootstrap-table-develop/dist/locale/bootstrap-table-zh-CN.min.js"></script>
 		
 	<%-- <script src="${page }/static/ajaxify/ajaxify.min.js" type="text/javascript"></script> --%>	
 	

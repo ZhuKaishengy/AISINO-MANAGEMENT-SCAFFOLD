@@ -26,4 +26,12 @@ public class MunuServiceImpl implements MenuService {
 		return list;
 	}
 
+	@Override
+	public List<Menu> getMenuList() {
+		// TODO Auto-generated method stub
+		
+		List<Menu> list = menuMapper.selectByExample(null);
+		return list;
+	}
+
 }

@@ -7,4 +7,6 @@ import com.aisino.domain.shiro.Menu;
 public interface MenuService {
 
 	public List<Menu> getMenuListByUpId(String upId);
+	
+	public List<Menu> getMenuList();
 }
