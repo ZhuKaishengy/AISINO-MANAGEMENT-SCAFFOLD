@@ -15,7 +15,7 @@ public class Encipher extends SimpleCredentialsMatcher{
 	public void testMd5(){
 		String algorithmName = "MD5";
 		ByteSource source = ByteSource.Util.bytes("111111");
-		ByteSource salt = ByteSource.Util.bytes("sjxsjx");
+		ByteSource salt = ByteSource.Util.bytes("admin");
 		int hashIterations = 1024;
 		//result 为MD5加密结果，用Base64加密
 		SimpleHash result = new SimpleHash(algorithmName, source, salt, hashIterations);

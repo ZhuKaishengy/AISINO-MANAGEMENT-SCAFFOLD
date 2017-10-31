@@ -9,7 +9,17 @@ pageContext.setAttribute("page",path);
 <html>
   <head>
 <base href="<%=basePath%>">
+<link href="${page}/static/bootstrap-table-develop/dist/bootstrap-table.min.css" rel="stylesheet" />
 <script src="${page}/static/bootstrap-table-develop/dist/bootstrap-table.min.js"></script>
+<script src="${page}/static/bootstrap-table-develop/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="${page}/static/bootstrap-table-develop/dist/extensions/editable/bootstrap-table-editable.min.js"></script>
+<script src="${page}/static/bootstrap3-editable-1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script type="text/javascript" src="${page}/static/js/menuManage.js"></script>
+<style type="text/css">
+	.columns.columns-right.btn-group.pull-right .btn.btn-default{
+		height:34px;
+	}
+</style>
   </head>
   <body>
 	  <div id="content" >
@@ -39,7 +49,7 @@ pageContext.setAttribute("page",path);
                         <div class="col-md-3">
                             <input type="text" class="form-control" id="search_title">
                         </div>
-                        <label class="control-label col-md-1" for="search_haschild">是否有子节点（1有，0没有）</label>
+                        <label class="control-label col-md-1" for="search_haschild">是否有子节点</label>
                         <div class="col-md-3">
                             <input type="text" class="form-control" id="search_haschild">
                         </div>
@@ -53,7 +63,7 @@ pageContext.setAttribute("page",path);
                         <div class="col-md-3">
                             <input type="text" class="form-control" id="search_roleNeeded">
                         </div>
-                        <label class="control-label col-md-1" for="search_status">菜单状态（1可用，0禁用）</label>
+                        <label class="control-label col-md-1" for="search_status">菜单状态</label>
                         <div class="col-md-3">
                             <input type="text" class="form-control" id="search_status">
                         </div>
@@ -78,40 +88,13 @@ pageContext.setAttribute("page",path);
         </div>
         <table id="table_remote"></table>
     </div>
-		  <script type="text/javascript">
-	    	$(function(){
+    
+		  <!-- <script type="text/javascript">
+			$(function(){
+				MenuManage.initTable();
+			});
 				
-				$("#table_remote").bootstrapTable({
-				 	url: '${page}/shiro/menuList',
-					columns: [{
-				        field: 'menuId',
-				        title: '菜单id'
-				    }, {
-				        field: 'menuUpid',
-				        title: '上级菜单id'
-				    }, {
-				        field: 'iconClass',
-				        title: '图标样式'
-				    }, {
-				        field: 'title',
-				        title: '菜单名称'
-				    }, {
-				        field: 'haschild',
-				        title: '是否有子节点（1有，0没有）'
-				    }, {
-				        field: 'href',
-				        title: '链接地址'
-				    }, {
-				        field: 'roleNeeded',
-				        title: '显示所需权限'
-				    }, {
-				        field: 'status',
-				        title: '菜单状态（1可用，0禁用）'
-				    }]
-				
-				});
-	    	})
-	    </script>
+	    </script> -->
 	  </div>
   </body>
 </html>

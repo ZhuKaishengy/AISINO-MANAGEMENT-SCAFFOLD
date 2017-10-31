@@ -12,17 +12,8 @@ var LoginForm = function(){
 				return regName.test(value);
 			});
 			
-			
-			
-		/*	$.validator.setDefaults({
-				submitHandler: function(){
-					alert("submit");
-					$("#test_form").submit();
-				}
-			});*/
-			
 			$('.login-form').validate({
-				errorElement: 'label', //default input error message container
+				errorElement: 'span', //default input error message container
 	            errorClass: 'help-inline', // default input error message class
 	            focusInvalid: false, // do not focus the last invalid input
 			    rules: {
@@ -54,17 +45,17 @@ var LoginForm = function(){
 	            },
 
 	            highlight: function (element) { // hightlight error inputs
-	            	$(element).closest('.control-group').removeClass('success');
+	            	$(element).closest('.form-group').removeClass('success');
 	                $(element)
-	                    .closest('.control-group').addClass('error'); // set error class to the control group
+	                    .closest('.form-group').addClass('error'); // set error class to the control group
 	            },
 	            unhightlight:function(element){
 	            	 $(element)
-	                    .closest('.control-group').addClass('has-success'); // set success class to the control group
+	                    .closest('.form-group').addClass('has-success'); // set success class to the control group
 	            },
 	            success: function (label) {
-	            	label.closest('.control-group').removeClass('error');
-	            	label.closest('.control-group').addClass('success');
+	            	label.closest('.form-group').removeClass('error');
+	            	label.closest('.form-group').addClass('success');
 	            	label.remove();
 	            },
 
@@ -190,7 +181,7 @@ var LoginForm = function(){
 	        
 	        //forget-form校验
 	        $('.forget-form').validate({
-	            errorElement: 'label', //default input error message container
+	            errorElement: 'span', //default input error message container
 	            errorClass: 'help-inline', // default input error message class
 	            focusInvalid: false, // do not focus the last invalid input
 	            ignore: "",
@@ -222,11 +213,11 @@ var LoginForm = function(){
 
 	            highlight: function (element) { // hightlight error inputs
 	                $(element)
-	                    .closest('.control-group').addClass('error'); // set error class to the control group
+	                    .closest('.form-group').addClass('has-error'); // set error class to the control group
 	            },
 
 	            success: function (label) {
-	                label.closest('.control-group').removeClass('error');
+	                label.closest('.form-group').removeClass('has-error');
 	                label.remove();
 	            },
 
@@ -244,15 +235,33 @@ var LoginForm = function(){
 	        	var userPhone = $("#userPhone").val();
 	        	//1.验证手机号
 	        	if ($('.forget-form').validate().element("#userPhone")) {
+	        		
+	        		settime(this);
 	        		//2.发送ajax
 	        		sendIdentitiCode_ajax(userPhone);
 	        		//3.页面显示变化
-	        		$(this).attr("disabled","disabled").find("i").addClass("icon-spinner icon-spin");
+//	        		$(this).attr("disabled","disabled").find("i").addClass("fa fa-spinner fa-spin");
 	        	}
 	        	
 	        });
-	        
-	        
+            var countdown=60;
+            
+            function settime(obj) {
+              if (countdown == 0) {
+                obj.removeAttribute("disabled");
+                obj.innerHTML="获取验证码";
+                countdown = 60;
+                return;
+              } else {
+                obj.setAttribute("disabled", "disabled");
+                obj.innerHTML= countdown + "秒后再获取";
+                countdown--;
+              }
+            setTimeout(function() {
+              settime(obj) }
+              ,1000)
+            };
+            
 	        $(document).keypress(function (e) {
 	            if (e.which == 13) {
 	            	validate_before_forgetForm_submit();
